@@ -19,6 +19,7 @@ class HomePageProductFeedResource extends JsonResource
     {
         return $this->success('',
             [
+                'id'         => $this->resource->id,
                 'title'      => substr($this->resource->title, 0, 20),
                 'content'    => substr($this->resource->content, 0, 50),
                 'color_code' => str_replace('#', '', $this->resource->color_code)
