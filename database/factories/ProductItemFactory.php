@@ -24,7 +24,7 @@ class ProductItemFactory extends Factory
             'discount'   => random_int(0, 25),
             'status'     => $this->faker->randomElement(array_column(ProductItemStatusEnum::cases(), 'value')),
             'product_id' => $this->faker->randomElement(Product::all()->pluck('id')->toArray()),
-            'seller_id'  => random_int(1, 20)
+            'seller_id'  => $this->faker->randomElement(Seller::all()->pluck('id')->toArray())
         ];
     }
 }
