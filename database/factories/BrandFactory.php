@@ -21,7 +21,7 @@ class BrandFactory extends Factory
         return [
             'title'  => $brandTitle,
             'slug'   => str_replace(' ', '_', $brandTitle),
-            'status' => $this->faker->randomElement(array_column(BrandStatusEnum::class, 'value')),
+            'status' => $this->faker->randomElement(array_column(BrandStatusEnum::cases(), 'value')),
         ];
     }
 }
