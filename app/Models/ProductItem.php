@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BrandStatusEnum;
 use App\Enums\ProductItemStatusEnum;
 use App\Enums\SellerStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
@@ -43,7 +44,10 @@ class ProductItem extends Model
     public static function saleableProductItemsQueryBuilder(): Builder
     {
         return ProductItem::whereHas('product', function ($productQueryBuilder) {
-            return $productQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value);
+            return $productQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)
+                ->whereHas('brand', function ($brandQueryBuilder) {
+                    return $brandQueryBuilder->where('status', BrandStatusEnum::ACTIVE->value);
+                });
         })
             ->whereHas('seller', function ($sellerQueryBuilder) {
                 return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);

@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\BrandStatusEnum;
 use App\Enums\ProductItemStatusEnum;
 use App\Enums\SellerStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +32,18 @@ class Product extends Model
         return $this->hasMany(ProductItem::class);
     }
 
+
+    /**
+     * @return HasMany
+     */
+    public function saleableProductItems(): HasMany
+    {
+        return $this->hasMany(ProductItem::class)->where('status', ProductItemStatusEnum::ACTIVE->value)
+            ->where('price', '>', 0)->whereHas('seller', function ($sellerQueryBuilder) {
+                return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
+            });
+    }
+
     /**
      * @return BelongsTo
      */
@@ -48,6 +62,8 @@ class Product extends Model
                 ->where('price', '>', 0)->whereHas('seller', function ($sellerQueryBuilder) {
                     return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
                 });
+        })->whereHas('brand', function ($brandQueryBuilder) {
+            return $brandQueryBuilder->where('status', BrandStatusEnum::ACTIVE->value);
         })->where('status', ProductItemStatusEnum::ACTIVE->value);
     }
 }

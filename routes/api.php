@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\Shop\AuthController;
 use App\Http\Controllers\Api\V1\Shop\Product\BiggestDiscountProductController;
 use App\Http\Controllers\Api\V1\Shop\Product\MostViewProductController;
 use App\Http\Controllers\Api\V1\Shop\Product\ProductController;
+use App\Http\Controllers\Api\V1\Shop\Product\ProductProductItemController;
 use App\Http\Controllers\Api\V1\Shop\Product\SpecialProductOfferController;
 use App\Http\Controllers\Api\V1\Shop\User\UserController;
 use Illuminate\Http\Request;
@@ -21,9 +22,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('test', function () {
-    return \App\Models\Brand::saleableBrandsQueryBuilder()->count();
-    return \App\Models\Seller::sellerWithSaleableProductQueryBuilder()->get();
-    return \App\Models\Product::saleableProductQueryBuilder()->limit(5)->with('productItems.seller')->get();
+//    return \App\Models\Brand::saleableBrandsQueryBuilder()->get();
+//    return \App\Models\Seller::sellerWithSaleableProductQueryBuilder()->get();
+//    return \App\Models\Product::saleableProductQueryBuilder()->limit(5)->with('productItems.seller')->get();
     return \App\Models\ProductItem::saleableProductItemsQueryBuilder()->count();
 });
 
@@ -41,6 +42,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 Route::apiResource('products', ProductController::class)->only(['show', 'index']);
+Route::get('product-with-product-items/{product}', [ProductProductItemController::class, 'show']);
 Route::get('special-product', [SpecialProductOfferController::class, 'index']);
 Route::get('most-view-product', [MostViewProductController::class, 'index']);
 Route::get('most-view-product', [BiggestDiscountProductController::class, 'index']);

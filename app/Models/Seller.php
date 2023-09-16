@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BrandStatusEnum;
 use App\Enums\ProductItemStatusEnum;
 use App\Enums\ProductStatusEnum;
 use App\Enums\SellerStatusEnum;
@@ -45,7 +46,10 @@ class Seller extends Model
         return Seller::whereHas('productItems', function ($productItemQueryBuilder) {
             return $productItemQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)
                 ->where('price', '>', 0)->whereHas('product', function ($productQueryBuilder) {
-                    return $productQueryBuilder->where('status', ProductStatusEnum::ACTIVE->value);
+                    return $productQueryBuilder->where('status', ProductStatusEnum::ACTIVE->value)
+                        ->whereHas('brand', function ($brandQueryBuilder) {
+                            return $brandQueryBuilder->where('status', BrandStatusEnum::ACTIVE->value);
+                        });
                 });
         })->where('status', SellerStatusEnum::ACTIVE->value);
     }
