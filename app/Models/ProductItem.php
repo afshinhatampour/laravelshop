@@ -44,16 +44,23 @@ class ProductItem extends Model
      */
     public function scopeSaleable(Builder $query): void
     {
-         $query->whereHas('product', function ($productQueryBuilder) {
+        $query->whereHas('product', function ($productQueryBuilder) {
             return $productQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)
-                ->whereHas('brand', function ($brandQueryBuilder) {
-                    return $brandQueryBuilder->where('status', BrandStatusEnum::ACTIVE->value);
-                });
+                ->activeBrand();
         })
-            ->whereHas('seller', function ($sellerQueryBuilder) {
-                return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
-            })
+            ->activeSeller()
             ->where('status', ProductItemStatusEnum::ACTIVE->value)
             ->where('price', '>', 0);
+    }
+
+    /**
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeActiveSeller(Builder $query)
+    {
+        $query->whereHas('seller', function ($sellerQueryBuilder) {
+            return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
+        });
     }
 }

@@ -22,12 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('test', function () {
-    return  \App\Models\Product::where('id', 1)->with('saleableProductItems')->get();
-//    return \App\Models\ProductItem::saleable()->count();
-//    return \App\Models\Brand::saleableBrandsQueryBuilder()->get();
-//    return \App\Models\Seller::sellerWithSaleableProductQueryBuilder()->get();
-//    return \App\Models\Product::saleableProductQueryBuilder()->limit(5)->with('productItems.seller')->get();
-    return \App\Models\ProductItem::saleableProductItemsQueryBuilder()->count();
+    return  \App\Models\Product::saleable()->count();
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
