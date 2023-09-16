@@ -24,11 +24,12 @@ class Brand extends Model
     }
 
     /**
-     * @return Builder
+     * @param Builder $query
+     * @return void
      */
-    public static function saleableBrandsQueryBuilder(): Builder
+    public function scopeSaleable(Builder $query): void
     {
-        return Brand::whereHas('products', function ($productQueryBuilder) {
+        $query->whereHas('products', function ($productQueryBuilder) {
             return $productQueryBuilder->where('status', ProductStatusEnum::ACTIVE->value)
                 ->whereHas('productItems', function ($productItemQueryBuilder) {
                     return $productItemQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)

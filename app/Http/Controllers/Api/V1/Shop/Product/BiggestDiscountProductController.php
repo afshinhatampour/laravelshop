@@ -15,9 +15,7 @@ class BiggestDiscountProductController extends ApiController
     public function index(): AnonymousResourceCollection
     {
         return HomePageProductFeedResource::collection(
-            Product::saleableProductQueryBuilder()
-                ->limit(4)
-                ->get()
+            Product::saleable()->inRandomOrder()->limit(4)->get()
         );
     }
 }

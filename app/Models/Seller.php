@@ -39,11 +39,12 @@ class Seller extends Model
     }
 
     /**
-     * @return Builder
+     * @param Builder $query
+     * @return void
      */
-    public static function sellerWithSaleableProductQueryBuilder(): Builder
+    public static function scopeSaleable(Builder $query): void
     {
-        return Seller::whereHas('productItems', function ($productItemQueryBuilder) {
+        $query->whereHas('productItems', function ($productItemQueryBuilder) {
             return $productItemQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)
                 ->where('price', '>', 0)->whereHas('product', function ($productQueryBuilder) {
                     return $productQueryBuilder->where('status', ProductStatusEnum::ACTIVE->value)

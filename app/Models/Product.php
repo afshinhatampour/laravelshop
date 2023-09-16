@@ -32,16 +32,9 @@ class Product extends Model
         return $this->hasMany(ProductItem::class);
     }
 
-
-    /**
-     * @return HasMany
-     */
-    public function saleableProductItems(): HasMany
+    public function saleableProductItems()
     {
-        return $this->hasMany(ProductItem::class)->where('status', ProductItemStatusEnum::ACTIVE->value)
-            ->where('price', '>', 0)->whereHas('seller', function ($sellerQueryBuilder) {
-                return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
-            });
+        return $this->hasMany(ProductItem::class)->saleable();
     }
 
     /**
@@ -53,11 +46,12 @@ class Product extends Model
     }
 
     /**
-     * @return Builder
+     * @param Builder $query
+     * @return void
      */
-    public static function saleableProductQueryBuilder(): Builder
+    public function scopeSaleable(Builder $query): void
     {
-        return Product::whereHas('productItems', function ($productItemQueryBuilder) {
+        $query->whereHas('productItems', function ($productItemQueryBuilder) {
             return $productItemQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)
                 ->where('price', '>', 0)->whereHas('seller', function ($sellerQueryBuilder) {
                     return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
