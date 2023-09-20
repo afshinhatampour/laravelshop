@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\BrandStatusEnum;
 use App\Enums\ProductStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,7 @@ class Product extends Model
         'content',
         'unique_id',
         'brand_id',
+        'view_count',
         'status'
     ];
 

@@ -22,7 +22,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('test', function () {
-    return  \App\Models\Product::saleable()->count();
+    return \App\Models\ProductItem::saleable()->biggestDiscountProductId()->limit(5)->get()->pluck('product_id')->toArray();
+    $product = \App\Models\Product::orderBy('discount')->limit(5)->get();
+    return $product;
+    return \App\Models\Seller::saleable()->count();
+    return \App\Models\Brand::saleable()->count();
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -42,4 +46,4 @@ Route::apiResource('products', ProductController::class)->only(['show', 'index']
 Route::get('product-with-product-items/{product}', [ProductProductItemController::class, 'show']);
 Route::get('special-product', [SpecialProductOfferController::class, 'index']);
 Route::get('most-view-product', [MostViewProductController::class, 'index']);
-Route::get('most-view-product', [BiggestDiscountProductController::class, 'index']);
+Route::get('big-discount-product', [BiggestDiscountProductController::class, 'index']);

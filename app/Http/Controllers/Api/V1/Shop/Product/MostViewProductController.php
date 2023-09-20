@@ -15,7 +15,7 @@ class MostViewProductController extends ApiController
     public function index(): AnonymousResourceCollection
     {
         return HomePageProductFeedResource::collection(
-            Product::saleable()->inRandomOrder()->limit(4)->get()
+            Product::saleable()->orderBy('view_count', 'DESC')->limit(4)->get()
         );
     }
 }

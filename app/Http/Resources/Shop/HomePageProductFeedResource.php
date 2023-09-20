@@ -22,7 +22,8 @@ class HomePageProductFeedResource extends JsonResource
                 'id'         => $this->resource->id,
                 'title'      => substr($this->resource->title, 0, 20),
                 'content'    => substr($this->resource->content, 0, 50),
-                'color_code' => str_replace('#', '', $this->resource->color_code)
+                'color_code' => str_replace('#', '', $this->resource->color_code),
+                'view_count' => $this->resource->view_count
             ]
         );
     }

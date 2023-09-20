@@ -45,13 +45,7 @@ class Seller extends Model
     public static function scopeSaleable(Builder $query): void
     {
         $query->whereHas('productItems', function ($productItemQueryBuilder) {
-            return $productItemQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)
-                ->where('price', '>', 0)->whereHas('product', function ($productQueryBuilder) {
-                    return $productQueryBuilder->where('status', ProductStatusEnum::ACTIVE->value)
-                        ->whereHas('brand', function ($brandQueryBuilder) {
-                            return $brandQueryBuilder->where('status', BrandStatusEnum::ACTIVE->value);
-                        });
-                });
+            return $productItemQueryBuilder->saleable();
         })->where('status', SellerStatusEnum::ACTIVE->value);
     }
 }

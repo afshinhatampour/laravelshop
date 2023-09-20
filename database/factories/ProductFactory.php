@@ -21,11 +21,12 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'title'     => $this->faker->sentence,
-            'content'   => $this->faker->paragraph,
-            'unique_id' => uniqid(),
-            'brand_id'  => $this->faker->randomElement(Brand::all()->pluck('id')->toArray()),
-            'status'    => $this->faker->randomElement(ProductStatusEnum::cases()),
+            'title'      => $this->faker->sentence,
+            'content'    => $this->faker->paragraph,
+            'unique_id'  => uniqid(),
+            'brand_id'   => $this->faker->randomElement(Brand::all()->pluck('id')->toArray()),
+            'status'     => $this->faker->randomElement(ProductStatusEnum::cases()),
+            'view_count' => random_int(0, 50)
         ];
     }
 }

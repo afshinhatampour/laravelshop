@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BrandStatusEnum;
-use App\Enums\ProductItemStatusEnum;
 use App\Enums\ProductStatusEnum;
-use App\Enums\SellerStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,13 +28,7 @@ class Brand extends Model
     public function scopeSaleable(Builder $query): void
     {
         $query->whereHas('products', function ($productQueryBuilder) {
-            return $productQueryBuilder->where('status', ProductStatusEnum::ACTIVE->value)
-                ->whereHas('productItems', function ($productItemQueryBuilder) {
-                    return $productItemQueryBuilder->where('status', ProductItemStatusEnum::ACTIVE->value)
-                        ->where('price', '>', 0)->whereHas('seller', function ($sellerQueryBuilder) {
-                            return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
-                        });
-                });
+            return $productQueryBuilder->where('status', ProductStatusEnum::ACTIVE->value)->SaleableProductItem();
         })->where('status', BrandStatusEnum::ACTIVE->value);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use function Laravel\Prompts\select;
 
 class ProductItem extends Model
 {
@@ -76,5 +77,10 @@ class ProductItem extends Model
         $query->whereHas('seller', function ($sellerQueryBuilder) {
             return $sellerQueryBuilder->where('status', SellerStatusEnum::ACTIVE->value);
         });
+    }
+
+    public static function scopeBiggestDiscountProductId(Builder $query)
+    {
+        $query->select('product_id')->distinct()->orderBy('discount', 'DESC');
     }
 }
