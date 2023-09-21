@@ -15,6 +15,6 @@ class ProductProductItemController extends ApiController
     public function show(int $productId)
     {
         return $this->success('',
-            Product::where('id', $productId)->with('productItems')->first());
+            Product::where('id', $productId)->first());
     }
 }

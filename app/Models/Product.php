@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\BrandStatusEnum;
 use App\Enums\ProductStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,6 +23,10 @@ class Product extends Model
         'status'
     ];
 
+    protected $appends = [
+        'price'
+    ];
+
     /**
      * @return HasMany
      */
@@ -35,6 +38,14 @@ class Product extends Model
     public function saleableProductItems()
     {
         return $this->hasMany(ProductItem::class)->saleable();
+    }
+
+    /**
+     * @return ProductItem|null
+     */
+    public function cheapestProductItem(): ?ProductItem
+    {
+        return $this->productItems()->orderBy('price', 'ASC')->first();
     }
 
     /**
@@ -83,5 +94,10 @@ class Product extends Model
         $query->whereHas('brand', function ($brandQueryBuilder) {
             return $brandQueryBuilder->where('status', BrandStatusEnum::ACTIVE->value);
         });
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this->cheapestProductItem()->price;
     }
 }

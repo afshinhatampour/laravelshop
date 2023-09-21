@@ -18,11 +18,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Brand::factory(100)->create();
-        User::factory(1000)->create();
-        Product::factory(1000)->create();
+        Brand::factory(50)->create();
+        User::factory(100)->create();
+        Product::factory(46)->create();
         Seller::factory(50)->create();
-        ProductItem::factory(5000)->create();
+        ProductItem::factory(1000)->create();
         Category::factory(50)->create();
     }
 }
