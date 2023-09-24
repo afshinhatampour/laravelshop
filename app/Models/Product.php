@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Product extends Model
 {
@@ -20,7 +21,7 @@ class Product extends Model
         'unique_id',
         'brand_id',
         'view_count',
-        'status'
+        'status',
     ];
 
     protected $appends = [
@@ -38,6 +39,14 @@ class Product extends Model
     public function saleableProductItems()
     {
         return $this->hasMany(ProductItem::class)->saleable();
+    }
+
+    /**
+     * @return MorphToMany
+     */
+    public function cartItems(): MorphToMany
+    {
+        return $this->morphToMany(CartItem::class, 'cartable');
     }
 
     /**

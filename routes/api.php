@@ -43,7 +43,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 Route::apiResource('products', ProductController::class)->only(['show', 'index']);
-Route::get('product-with-product-items/{product}', [ProductProductItemController::class, 'show']);
+Route::get('
+/{product}', [ProductProductItemController::class, 'show']);
 Route::get('special-product', [SpecialProductOfferController::class, 'index']);
 Route::get('most-view-product', [MostViewProductController::class, 'index']);
 Route::get('big-discount-product', [BiggestDiscountProductController::class, 'index']);

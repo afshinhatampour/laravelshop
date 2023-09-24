@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use App\Enums\ProductItemStatusEnum;
-use App\Enums\ProductStatusEnum;
 use App\Enums\SellerStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use function Laravel\Prompts\select;
 
 class ProductItem extends Model
 {
@@ -79,7 +77,11 @@ class ProductItem extends Model
         });
     }
 
-    public static function scopeBiggestDiscountProductId(Builder $query)
+    /**
+     * @param Builder $query
+     * @return void
+     */
+    public static function scopeBiggestDiscountProductId(Builder $query): void
     {
         $query->select('product_id')->distinct()->orderBy('discount', 'DESC');
     }
